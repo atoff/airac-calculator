@@ -1,2 +1,2 @@
 vendor
-.phpuinit.result.cache
+\.phpunit\.result\.cache
