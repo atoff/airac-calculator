@@ -1,6 +1,6 @@
 
 # AIRAC Calculator
-
+[![Build Status](https://travis-ci.com/atoff/airac-calculator.svg?branch=master)](https://travis-ci.com/atoff/airac-calculator)
 ## About
 
 #### Description
