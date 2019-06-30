@@ -1,0 +1,10 @@
+jobs:
+  include:
+    - stage: "Test"
+      language: php
+      php:
+        - 7.3
+      before_install:
+        - composer install
+      script:
+        - ./phpunit
