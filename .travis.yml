@@ -3,7 +3,9 @@ jobs:
     - stage: "Test"
       language: php
       php:
+        - 7.1
         - 7.3
+        - 7.4
       before_install:
         - composer install
       script:
