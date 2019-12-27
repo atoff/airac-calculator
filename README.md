@@ -11,7 +11,7 @@ Typically, AIRAC cycles are used to update various aviation procedures, includin
 The cycle code is created using the two number representation of the year (i.e. 2019 = 19) along with the cycle number (i.e. 01 if the first cycle). Thus, a typical cycle code may look like 1901.
 
 #### Requirements
-* PHP 7.1.8 and above
+* PHP 7.2 and above
 
 #### Author
 This package was created by [Alex Toff](https://alextoff.uk)
