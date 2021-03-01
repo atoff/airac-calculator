@@ -1,6 +1,6 @@
 
 # AIRAC Calculator
-[![Build Status](https://travis-ci.com/atoff/airac-calculator.svg?branch=master)](https://travis-ci.com/atoff/airac-calculator)
+[![Tests](https://github.com/atoff/airac-calculator/actions/workflows/test.yml/badge.svg)](https://github.com/atoff/airac-calculator/actions/workflows/test.yml)
 ## About
 
 #### Description
