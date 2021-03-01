@@ -17,8 +17,8 @@ final class AccuracyTest extends TestCase
         $crawler = new Crawler(file_get_contents('https://www.nm.eurocontrol.int/RAD/common/airac_dates.html'));
 
         $years = $crawler->filter('table table');
-        // Check that it finds 4/5 years as expected
-        $this->assertContains(count($years), [4, 5]);
+        // Check that it finds 3/4/5 years as expected
+        $this->assertContains(count($years), [3, 4, 5]);
 
         foreach ($years as $year) {
             $year = new Crawler($year);
@@ -36,5 +36,4 @@ final class AccuracyTest extends TestCase
             }
         }
     }
-
 }
