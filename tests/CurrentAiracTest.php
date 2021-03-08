@@ -32,6 +32,9 @@ final class CurrentAiracTest extends TestCase
         Carbon::setTestNow(new Carbon('10 JAN 21'));
         $this->assertEquals('2014', AIRACCalculator::currentAiracCycle());
 
+        Carbon::setTestNow(new Carbon('10 FEB 21'));
+        $this->assertEquals('2101', AIRACCalculator::currentAiracCycle());
+
         Carbon::setTestNow();
     }
 

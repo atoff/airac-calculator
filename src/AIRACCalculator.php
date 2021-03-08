@@ -64,6 +64,7 @@ class AIRACCalculator
         while (true) {
             $attempts++;
 
+
             $guess = $twoDigitYear . $month;
             $guessDate = self::dateForCycle($guess);
 
@@ -72,28 +73,28 @@ class AIRACCalculator
             }
 
             if ($guessDate->greaterThan($date) && $guessDate->diffInDays($date) <= 28) {
+                // The guessed cycle is in the future and within 28 days. Yes!
                 return $guess;
-            } elseif ($guessDate->lessThan($date)) {
+            }
+            // The guessed cycle is before the current date
+            if ($month < 13) {
+                $month = str_pad($month + 1, 2, '0', STR_PAD_LEFT);
+                continue;
+            }
 
-                if ($month < 13) {
+            if ($month == 13) {
+                // Check to see if is "exceptional year"
+                $years = self::extraordinaryCycles();
+                if (in_array("20" . $twoDigitYear, $years)) {
                     $month = str_pad($month + 1, 2, '0', STR_PAD_LEFT);
                     continue;
                 }
-
-                if ($month == 13) {
-                    // Check to see if is "exceptional year"
-                    $years = self::extraordinaryCycles();
-                    if (in_array("20" . $twoDigitYear, $years)) {
-                        $month = str_pad($month + 1, 2, '0', STR_PAD_LEFT);
-                        continue;
-                    }
-                }
-
-                // Else, roll over year
-                $twoDigitYear = $date->addYear()->format('y');
-                $month = "01";
-                continue;
             }
+
+            // Else, roll over year
+            $twoDigitYear = $date->copy()->addYear()->format('y');
+            $month = "01";
+            continue;
         }
     }
 
@@ -310,5 +311,4 @@ class AIRACCalculator
     {
         return new Carbon(self::$datumDate);
     }
-
 }
