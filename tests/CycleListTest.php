@@ -18,10 +18,16 @@ final class CycleListTest extends TestCase
         $this->assertEquals(2, count(AIRACCalculator::cyclesForYear('2020')[0]));
     }
 
+    public function testItReturnsCyclesCurrentYear(): void
+    {
+        // 2020 has 14 cycles
+        Carbon::setTestNow(new Carbon('01 JAN 2020'));
+        $this->assertEquals(14, count(AIRACCalculator::cyclesForYear()));
+    }
+
     public function testItReturnsCorrectArray(): void
     {
         // 2019 has 13 cycles, first cycle 1901 effective 2019-01-03
-
         $cycles = AIRACCalculator::cyclesForYear('2019');
 
         $this->assertEquals("1901", $cycles[0][0]);
