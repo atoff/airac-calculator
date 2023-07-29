@@ -9,5 +9,8 @@
 				"bmewburn.vscode-intelephense-client"
 			]
 		}
+	},
+	"containerEnv": {
+		"XDEBUG_MODE": "coverage"
 	}
 }

@@ -1,134 +1,89 @@
 
-# AIRAC Calculator
+# AIRAC Calculator for PHP
 [![Tests](https://github.com/atoff/airac-calculator/actions/workflows/test.yml/badge.svg)](https://github.com/atoff/airac-calculator/actions/workflows/test.yml)
-## About
 
-#### Description
-airac-calculator is a lightweight PHP library that provides information on AIRAC cycle effective dates. AIRAC stands for Aeronautical Information Regulation And Control, and the cycles associated with them are used to almost version aviation data. A cycle is valid for 28 days, and so there are usually 13 cycles per year.
+`airac-calculator` is a zero dependency PHP library for parsing and computing AIRAC (Aeronautical Information Regulation And Control) cycles.
 
-Typically, AIRAC cycles are used to update various aviation procedures, including aeronautical charts, flight procedures (such as SIDs and STARS) and other operational data.
+AIRAC cycles are used in the aviation industry to standardise significant revisions to operational information, such as aeronautical charts, frequencies, procedures and more. Each cycle lasts of 28 days, with 13 cycles per year (or exceptionally 14 in some cases). Cycles have two key, unique, properties; the date it becomes effective and a 4 digit cycle code.
 
-The cycle code is created using the two number representation of the year (i.e. 2019 = 19) along with the cycle number (i.e. 01 if the first cycle). Thus, a typical cycle code may look like 1901.
+This package has been validated against the EUROCONTROL AIRAC dates database.
 
-#### Requirements
-* PHP 7.2 and above
+## Requirements
+* PHP 7.2 and above (tested up to PHP 8.2)
 
-#### Author
-This package was created by [Alex Toff](https://alextoff.uk)
-
-#### License
+## License
 airac-calculator is licensed under the MIT license, which can be found in the root of the package in the `LICENSE` file.
 
 ## Installation
 
-The easiest way to install is through the use of composer:
+The easiest way to install is via composer:
 ```
 $ composer require cobaltgrid/airac-calculator
 ```
 
 ## Usage
 If you are using Composer:
-```
+```php
 <?php
 
 // Include the composer autoloader
 require('../vendor/autoload.php');
 
 // Import the class
-use CobaltGrid\Aviation\AIRACCalculator;
-
-...
-
-// Example: echo the current cycle
-echo AIRACCalculator::currentAiracCycle();
+use CobaltGrid\AIRACCalculator\AIRACCycle;
 ```
 
-## Examples
-For examples, see the `examples` folder in the base.
+All functions are performed on the `AIRACCycle` class. Documentation for available methods is given below.
+
+### Creating a cycle
+```php
+// Getting the AIRAC cycle effective at a specific date
+AIRACCycle::forDate(new DateTime('2023-07-29'));
+
+// Getting the AIRAC cycle from an **exact** effective date
+AIRACCycle::fromEffectiveDate(new DateTime('2023-07-13'));
+
+// Getting the AIRAC cycle from a cycle code
+AIRACCycle::fromCycleCode('2308');
+
+// Getting from a serial (a serial is the number of cycles since the AIRAC epoch)
+AIRACCycle::fromSerial(1619);
+
+// Getting the current effective AIRAC
+AIRACCycle::current();
+
+// Getting the next AIRAC to become effective
+AIRACCycle::next();
+
+// Getting the previous AIRAC
+AIRACCycle::previous();
+```
+
+### Getting cycle information
+```php
+$cycle = AIRACCycle::current();
+
+// Get the 4-digit AIRAC cycle code (string)
+$cycle->getCycleCode(); // 2308
+
+// Gets the number of the cycle in it's year, starting at 1 (i.e. the first cycle is ordinal 1, second is 2, etc.) (int)
+$cycle->getOrdinal(); // 1
+
+// Returns the date the cycle became/becomes effective (DateTime)
+$cycle->getEffectiveDate(); // DateTime Instance
+
+// Returns the serial (number of cycles since AIRAC epoch) (int)
+$cycle->getSerial(); // 1619
+
+// Returns the next cycle from this one (AIRACCycle)
+$cycle->nextCycle(); // AIRACCycle Instance
+
+// Returns the previous cycle from this one (AIRACCycle)
+$cycle->previousCycle(); // AIRACCycle Instance
+```
 
 ## Testing
-The majority of the code base is tested using PHPUnit. To run the suite:
-`$ ./phpunit`
-
-## Documentation
-All of the publicly accessible functions are detailed below. Note that they are **all static methods**.
-
-### dateForCycle($cycle)
-Computes and returns the effective date for a given cycle.
-* Arguments:
-	* `$cycle` `string/int` The AIRAC cycle code (e.g. 1901)
-* Returns:
-	* `Carbon\Carbon` Carbon date instance
+The code base is tested with PHP unit
 ```
-echo AIRACCalculator::dateForCycle('1901')->format('d/m/Y');
-// ... 03/01/2019
-```
-
-### nextAiracCycle(Carbon $date = null)
-Computes and returns the upcoming AIRAC cycle
-* Arguments:
-	* (opt) `$date` `Carbon\Carbon` A Carbon date instance. If supplied, the resulting cycle will be the next effective cycle from this date, rather than the current date
-* Returns:
-	* `string` AIRAC Cycle Code
-```
-// Today is 30/06/2019
-echo AIRACCalculator::nextAiracCycle();
-// ... 1908
-```
-
-### nextAiracDate(Carbon $date = null)
-Computes and returns the effective date of the upcoming AIRAC cycle
-* Arguments:
-	* (opt) `$date` `Carbon\Carbon` A Carbon date instance. If supplied, the resulting date will be the next effective cycle date from this date, rather than from the current date
-* Returns:
-	* `Carbon\Carbon` Next effective cycle date
-```
-// Today is 30/06/2019
-echo AIRACCalculator::nextAiracDate()->format('d/m/Y');
-// ... 18/07/2019
-```
-
-### currentAiracCycle(Carbon $date = null)
-Computes and returns the current AIRAC cycle code
-* Arguments:
-	* (opt) `$date` `Carbon\Carbon` A Carbon date instance. If supplied, the resulting cycle will be the effective cycle at this date.
-* Returns:
-	* `string` AIRAC Cycle Code
-```
-// Today is 30/06/2019
-echo AIRACCalculator::currentAiracCycle();
-// ... 1907
-```
-
-### isNewAiracDay(Carbon $date = null)
-Returns whether an AIRAC effective date lies on this day
-* Arguments:
-	* (opt) `$date` `Carbon\Carbon` A Carbon date instance. If supplied, instead of using the current day, it will check if the date supplied lies on an update day.
-* Returns:
-	* `boolean`
-```
-// Today is 30/06/2019
-echo AIRACCalculator::isNewAiracDay();
-// ... 0
-
-// Today is 20/06/2019
-echo AIRACCalculator::isNewAiracDay();
-// ... 1
-```
-
-### cyclesForYear($year = null)
-Computes and returns a 2D array of the cycles for a year
-* Arguments:
-	* (opt) `$year` `string|int` A 4 digit year, either in int or string format. If not supplied, will use current year.
-* Returns:
-	* `array` An array of cycles. Each "cycle" item is an array following a `[$cycleCode, $effectiveDate]` format. The `$effectiveDate` is given as a `Carbon\Carbon` object.
-```
-foreach (AIRACCalculator::cyclesForYear() as $cycle){
-	echo $cycle[0] . ' at ' . $cycle[1]->format('d/m/Y');
-}
-
-// 1901 at 03/01/2019
-// 1902 at 31/01/2019
-// 1903 at 28/02/2019
-...
+$ ./vendor/bin/phpunit
 ```
