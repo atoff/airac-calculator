@@ -1,0 +1,16 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php
+{
+	"name": "PHP",
+	"image": "webdevops/php-dev:8.2",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bmewburn.vscode-intelephense-client"
+			]
+		}
+	},
+	"containerEnv": {
+		"XDEBUG_MODE": "coverage"
+	}
+}

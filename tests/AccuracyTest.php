@@ -1,17 +1,11 @@
 <?php
 
-use Carbon\Carbon;
-use CobaltGrid\Aviation\AIRACCalculator;
+use CobaltGrid\AIRACCalculator\AIRACCycle;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
 final class AccuracyTest extends TestCase
 {
-    public function testItWillGiveCorrectDatumDate(): void
-    {
-        $this->assertEquals(new Carbon(AIRACCalculator::$datumDate), AIRACCalculator::dateForCycle(AIRACCalculator::$datumCycle));
-    }
-
     public function testItIsTheSameAsOfficalSource(): void
     {
         $crawler = new Crawler(file_get_contents('https://www.nm.eurocontrol.int/RAD/common/airac_dates.html'));
@@ -30,9 +24,8 @@ final class AccuracyTest extends TestCase
                 $cycle = $cycles->eq($i);
 
                 $cycleNumber = $cycle->filter('td:nth-of-type(2)')->text();
-                $cycleDate = new Carbon($cycle->filter('td:nth-of-type(5)')->text());
-
-                $this->assertEquals($cycleDate, AIRACCalculator::dateForCycle($cycleNumber));
+                $cycleDate = new DateTime($cycle->filter('td:nth-of-type(5)')->text(), new DateTimeZone('UTC'));
+                $this->assertEquals($cycleDate, AIRACCycle::fromCycleCode($cycleNumber)->getEffectiveDate());
             }
         }
     }
