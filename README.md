@@ -83,7 +83,7 @@ $cycle->previousCycle(); // AIRACCycle Instance
 ```
 
 ## Testing
-The code base is tested with PHP unit
+The code base is tested with PHP unit:
 ```
 $ ./vendor/bin/phpunit
 ```
