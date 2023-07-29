@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestCase;
 
 final class AIRACClassTest extends TestCase
 {
-
     private AIRACCycle $cycle;
 
     protected function setUp(): void
