@@ -24,7 +24,7 @@ jobs:
       uses: ramsey/composer-install@v2
 
     - name: 📦 install linter
-      uses: composer install laravel/pint
+      run: composer install laravel/pint
 
     - name: Run linter
       run: vendor/bin/pint --test
