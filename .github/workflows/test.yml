@@ -5,12 +5,9 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  schedule:
-  - cron: "0 12 1 * *"
 
 jobs:
-  build:
-    
+  test:
     name: CI on PHP ${{matrix.php_versions}}
     runs-on: ubuntu-latest
     strategy:
