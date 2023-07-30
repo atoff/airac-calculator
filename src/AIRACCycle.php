@@ -97,7 +97,7 @@ class AIRACCycle
         return static::fromSerial(static::current()->getSerial() - 1);
     }
 
-    /** Returns the serial of the AIRAC cycle at the given date. Whilt a float is always returned, note that this is an integer if exactly at an effective date, or a float otherwise*/
+    /** Returns the serial of the AIRAC cycle at the given date. Whilst a float is always returned, note that this is an integer if exactly at an effective date, or a float otherwise*/
     public static function getSerialForDate(DateTime $dateTime): float
     {
         $diffSeconds = $dateTime->getTimestamp() - static::getEpochDate()->getTimestamp();
