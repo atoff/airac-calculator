@@ -88,13 +88,13 @@ class AIRACCycle
     /** Returns the next AIRAC cycle */
     public static function next(): static
     {
-        return static::fromSerial(static::current()->getSerial() + 1);
+        return static::current()->nextCycle();
     }
 
     /** Returns the previous AIRAC cycle */
     public static function previous(): static
     {
-        return static::fromSerial(static::current()->getSerial() - 1);
+        return static::current()->previousCycle();
     }
 
     /** Returns the serial of the AIRAC cycle at the given date. Whilst a float is always returned, note that this is an integer if exactly at an effective date, or a float otherwise*/
