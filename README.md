@@ -9,7 +9,7 @@ AIRAC cycles are used in the aviation industry to standardise significant revisi
 This package has been validated against the EUROCONTROL AIRAC dates database.
 
 ## Requirements
-* PHP 8.1 and above (tested up to PHP 8.2)
+* PHP 8.1 and above (tested up to PHP 8.3)
 
 ## License
 airac-calculator is licensed under the MIT license, which can be found in the root of the package in the `LICENSE` file.
