@@ -12,7 +12,7 @@ final class AccuracyTest extends TestCase
 
         $years = $crawler->filter('table table');
         // Check that it finds 3/4/5 years as expected
-        $this->assertContains(count($years), [3, 4, 5]);
+        $this->assertContains(count($years), [3, 4, 5, 6]);
 
         foreach ($years as $year) {
             $year = new Crawler($year);
@@ -24,8 +24,12 @@ final class AccuracyTest extends TestCase
                 $cycle = $cycles->eq($i);
 
                 $cycleNumber = $cycle->filter('td:nth-of-type(2)')->text();
-                $cycleDate = new DateTime($cycle->filter('td:nth-of-type(5)')->text(), new DateTimeZone('UTC'));
-                $this->assertEquals($cycleDate, AIRACCycle::fromCycleCode($cycleNumber)->getEffectiveDate());
+                $cycleDateRaw = $cycle->filter('td:nth-of-type(5)')->text();
+
+                preg_match("/\d{2} [A-Z]{3} \d{2,4}/", $cycleDateRaw, $matches);
+
+                $cycleDate = new DateTime($matches[0], new DateTimeZone('UTC'));
+                $this->assertEquals($cycleDate, AIRACCycle::fromCycleCode($cycleNumber)->getEffectiveDate(), "Cycle $cycleNumber does not match official source.");
             }
         }
     }
